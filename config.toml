@@ -1,0 +1,7 @@
+log-path = "test_logpath"
+port = 53
+listen-addr = "0.0.0.0"
+upstream = ["1.1.1.1:53"]
+log-level = "debug"
+max-connections = 10000
+max-cache-size = 10000
