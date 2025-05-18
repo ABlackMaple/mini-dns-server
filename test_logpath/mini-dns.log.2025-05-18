@@ -1,0 +1,6 @@
+2025-05-18T22:24:23.039936068+08:00  INFO mini_dns_server: Logging initialized with level: 'debug'
+2025-05-18T22:24:23.0400042+08:00  INFO mini_dns_server: Log path: '"test_logpath"'
+2025-05-18T22:24:23.040011152+08:00  INFO mini_dns_server: Max connections: '10000'
+2025-05-18T22:24:23.040015523+08:00  INFO mini_dns_server: Max cache size: '10000'
+2025-05-18T22:24:23.040019478+08:00  INFO mini_dns_server: Upstream servers: 'Some(["1.1.1.1:53"])'
+2025-05-18T22:24:23.040027374+08:00  INFO mini_dns_server: starting server on port 53
