@@ -45,7 +45,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            listen_addr: "127.0.0.1".to_string(),
+            listen_addr: "0.0.0.0".to_string(),
             upstream_servers: Some(vec!["114.114.114.114:53".to_string()]),
             port: DEFAULT_PORT,
             log_path: PathBuf::from("logs"),
