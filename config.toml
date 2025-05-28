@@ -1,7 +1,7 @@
-log-path = "test_logpath"
+log-path = "logs"
 port = 53
 listen-addr = "0.0.0.0"
-upstream = ["1.1.1.1:53"]
+upstream = ["114.114.114.114:53"]
 log-level = "debug"
 max-connections = 100
 max-cache-size = 1000

@@ -43,6 +43,7 @@ pub struct Config {
 }
 
 impl Default for Config {
+    // Default implementation for Config
     fn default() -> Self {
         Self {
             listen_addr: "0.0.0.0".to_string(),
@@ -59,34 +60,45 @@ impl Default for Config {
 
 #[derive(Debug, Parser)]
 struct Args {
+    // Path to the config file
     #[arg(long, default_value = "config.toml")]
     config: Option<PathBuf>,
 
+    // Listen address
     #[arg(long)]
     listen_addr: Option<String>,
 
+    // Port to listen on
     #[arg(short, long)]
     port: Option<u16>,
 
+    // Upstream DNS servers
     #[arg(long, value_delimiter = ',')]
     upstream: Option<Vec<String>>,
 
+    // Path to the log file
     #[arg(long)]
     log_path: Option<PathBuf>,
 
+    // Maximum number of connections
     #[arg(long)]
     max_connections: Option<usize>,
 
+    // Maximum cache size
     #[arg(long)]
     max_cache_size: Option<usize>,
 
+    // Log level
     #[arg(long)]
     log_level: Option<String>,
 
+    // Path to the hosts file
     #[arg(long, default_value = "hosts")]
     db_path: Option<String>,
 }
 
+// Load the config file
+// If the file does not exist, return an empty config
 fn load_config(path: Option<&Path>) -> std::result::Result<Config, ConfigError> {
     let cfg = config::Config::builder();
 
@@ -123,6 +135,7 @@ fn load_config(path: Option<&Path>) -> std::result::Result<Config, ConfigError> 
 async fn main() -> Result<()> {
     let args = Args::parse();
 
+    // If the config file is not found, use the default config
     let mut config = load_config(args.config.as_deref()).unwrap_or_default();
 
     update_config(&mut config, &args);
@@ -141,6 +154,7 @@ async fn main() -> Result<()> {
     let listen_addr = config.listen_addr.clone();
     let upstream_servers = config.upstream_servers.clone().unwrap();
 
+    // Parse the upstream servers
     let upstream: Vec<SocketAddr> = upstream_servers
         .iter()
         .map(|s| match SocketAddr::from_str(&s) {
@@ -159,6 +173,8 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
+// Update the config with command line arguments
+// If the argument is not provided, use the default value from the config file
 fn update_config(config: &mut Config, args: &Args) {
     if let Some(listen_addr) = &args.listen_addr {
         config.listen_addr = listen_addr.clone();
@@ -183,11 +199,16 @@ fn update_config(config: &mut Config, args: &Args) {
     }
 }
 
+// Set up logging
+// If the log path is not provided, use the default value "logs".
+// If the log level is not provided, use the default value INFO.
 fn set_up_logging(log_path: Option<&str>, log_level: &str) -> mini_dns_server::Result<()>{
+    // Using the LocalTime for the log
     use tracing_subscriber::fmt::{ self, time::LocalTime};
     let file_appender = RollingFileAppender::new(Rotation::DAILY, log_path.unwrap_or("logs"), "mini-dns.log");
     let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
 
+    // Set up log guard to prevent logger from being dropped
     unsafe {
         GUARD = Some(_guard)
     }

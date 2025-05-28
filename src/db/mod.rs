@@ -288,8 +288,7 @@ async fn purge_expired_tasks(shared: Arc<Shared>) {
                 _ = shared.background_task.notified() => {}
             }
         } else {
-            // There are no keys expiring in the future. Wait until the task is
-            // notified.
+            // There are no keys expiring in the future. Wait until the task is notified.
             shared.background_task.notified().await;
         }
     }

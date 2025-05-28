@@ -2,6 +2,6 @@
 # See hosts(5) for details.
 
 127.0.0.1	localhost
-::1		localhost
+::1		localhost Arch
 127.0.0.1	arch.maple	Arch
 

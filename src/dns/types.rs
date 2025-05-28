@@ -38,7 +38,7 @@ impl Message {
 
     /// Convert the DNS message's answers to a human-readable string in logger.
     /// This function iterates through the answers and formats them into a string.
-    /// If there are no answers, it returns "<no answers>".
+    /// If there are no answers, it returns "no answers".
     pub fn response_data(&self) -> String {
         if self.answers.is_empty() {
             return String::from("<no answers>");
@@ -602,10 +602,10 @@ impl SerializationContext {
     /// The `domain_pointer` field is updated with the current offset of the domain name in the buffer.
     fn write_domain_name(&mut self, domain: &str, buffer: &mut Vec<u8>, buf_offset: u16) {
         if domain.is_empty() || domain == "." {
-            buffer.push(0);
-            return;
-        }
-
+        buffer.push(0);
+        return;
+    }
+    let domain = domain.trim_end_matches('.');
         let parts = domain.split('.');
         let mut cur_idx = 0;
         for part in parts {
@@ -616,7 +616,6 @@ impl SerializationContext {
                 buffer.extend_from_slice(&(0xC000 | (offset)).to_be_bytes());
                 return;
             }
-
             self.domain_pointer
                 .insert(full_name.to_owned(), buffer.len() as u16 + buf_offset);
             buffer.push(len as u8);
